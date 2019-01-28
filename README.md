@@ -1,1 +1,1 @@
-# PythonExercises2
+# Repository for fun!
