@@ -1,1 +1,1 @@
-# Repository for fun!
+# Repository for fun
