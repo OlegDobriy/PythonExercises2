@@ -11,13 +11,16 @@ class TestAddContact(unittest.TestCase):
         self.wd = webdriver.Chrome()
         self.wd.implicitly_wait(30)
 
-    def logout(self, wd):
+    def logout(self):
+        wd = self.wd
         wd.find_element_by_link_text("Logout").click()
 
-    def return_to_group_page(self, wd):
+    def return_to_group_page(self):
+        wd = self.wd
         wd.find_element_by_link_text("group page").click()
 
-    def create_contact(self, wd, contact):
+    def create_contact(self, contact):
+        wd = self.wd
         # init contact creation
         wd.find_element_by_link_text("add new").click()
         # populating fields
@@ -34,13 +37,15 @@ class TestAddContact(unittest.TestCase):
         wd.find_element_by_name("submit").click()
 
 
-    def login(self, wd, username, password):
-        self.open_home_page(wd)
+    def login(self, username, password):
+        wd = self.wd
+        self.open_home_page()
         wd.find_element_by_name("user").send_keys(username)
         wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath("//input[@value='Login']").click()
 
-    def open_home_page(self, wd):
+    def open_home_page(self):
+        wd = self.wd
         wd.get("http://localhost/addressbook/")
 
     def is_element_present(self, how, what):
@@ -61,20 +66,18 @@ class TestAddContact(unittest.TestCase):
         self.wd.quit()
 
     def test_add_contact(self):
-        wd = self.wd
-        self.login(wd, username="Admin", password="secret")
-        self.create_contact(wd, Contact(firstname='firstname', middlename='middlename', lastname='lastname',
+        self.login(username="Admin", password="secret")
+        self.create_contact(Contact(firstname='firstname', middlename='middlename', lastname='lastname',
                                         nickname='nickname', title='title', company='company', address='address',
                                         home='home', mobile='mobile'))
-        self.logout(wd)
+        self.logout()
 
     def test_add_empy_contact(self):
-        wd = self.wd
-        self.login(wd, username="Admin", password="secret")
-        self.create_contact(wd, Contact(firstname='', middlename='', lastname='',
+        self.login(username="Admin", password="secret")
+        self.create_contact(Contact(firstname='', middlename='', lastname='',
                                         nickname='', title='', company='', address='',
                                         home='', mobile=''))
-        self.logout(wd)
+        self.logout()
 
     def is_element_present(self, how, what):
         try:
