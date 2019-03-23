@@ -35,6 +35,7 @@ class TestAddContact(unittest.TestCase):
 
 
     def login(self, wd, username, password):
+        self.open_home_page(wd)
         wd.find_element_by_name("user").send_keys(username)
         wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath("//input[@value='Login']").click()
@@ -61,7 +62,6 @@ class TestAddContact(unittest.TestCase):
 
     def test_add_contact(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, username="Admin", password="secret")
         self.create_contact(wd, Contact(firstname='firstname', middlename='middlename', lastname='lastname',
                                         nickname='nickname', title='title', company='company', address='address',
@@ -70,7 +70,6 @@ class TestAddContact(unittest.TestCase):
 
     def test_add_empy_contact(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, username="Admin", password="secret")
         self.create_contact(wd, Contact(firstname='', middlename='', lastname='',
                                         nickname='', title='', company='', address='',
