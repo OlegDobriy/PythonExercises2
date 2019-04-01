@@ -22,11 +22,14 @@ class ContactHelper:
 
     def delete_first_contact(self):
         wd = self.app.wd
-        # select first contact
-        wd.find_element_by_name('selected[]').click()
+        self.select_first_contact()
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
+
+    def select_first_contact(self):
+        wd = self.app.wd
+        wd.find_element_by_name('selected[]').click()
 
     def delete_contact_by_name(self, contact):
         wd = self.app.wd
@@ -38,8 +41,7 @@ class ContactHelper:
 
     def modify_first_contact(self, contact):
         wd = self.app.wd
-        # select first contact
-        wd.find_element_by_xpath("(//img[@alt='Edit'])").click()
+        self.select_first_contact()
         # modifying fields
         wd.find_element_by_name("firstname").send_keys(contact.firstname)
         wd.find_element_by_name("middlename").send_keys(contact.middlename)
