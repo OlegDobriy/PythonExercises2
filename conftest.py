@@ -8,5 +8,11 @@ import pytest
 # а не каждый раз заново
 def app(request):
     fixture = Application()
-    request.addfinalizer(fixture.destroy)
+    fixture.session.login(username="Admin", password="secret")
+
+    def final():
+        fixture.session.logout()
+        fixture.destroy()
+
+    request.addfinalizer(final)
     return fixture
