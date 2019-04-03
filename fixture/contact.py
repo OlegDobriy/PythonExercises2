@@ -3,22 +3,31 @@ class ContactHelper:
     def __init__(self, app):
         self.app = app
 
-    def create(self, contact):
+    def create(self, contact_fields):
         wd = self.app.wd
         # init contact creation
         wd.find_element_by_link_text("add new").click()
         # populating fields
-        wd.find_element_by_name("firstname").send_keys(contact.firstname)
-        wd.find_element_by_name("middlename").send_keys(contact.middlename)
-        wd.find_element_by_name("lastname").send_keys(contact.lastname)
-        wd.find_element_by_name("nickname").send_keys(contact.nickname)
-        wd.find_element_by_name("title").send_keys(contact.title)
-        wd.find_element_by_name("company").send_keys(contact.company)
-        wd.find_element_by_name("address").send_keys(contact.address)
-        wd.find_element_by_name("home").send_keys(contact.home)
-        wd.find_element_by_name("mobile").send_keys(contact.mobile)
+        self.fill_contact_form(contact_fields)
         # submit contact creation
         wd.find_element_by_name("submit").click()
+
+    def fill_contact_form(self, contact):
+        self.change_field_value("firstname", contact.firstname)
+        self.change_field_value("middlename", contact.middlename)
+        self.change_field_value("lastname", contact.lastname)
+        self.change_field_value("nickname", contact.nickname)
+        self.change_field_value("title", contact.title)
+        self.change_field_value("company", contact.company)
+        self.change_field_value("address", contact.address)
+        self.change_field_value("home", contact.home)
+        self.change_field_value("mobile", contact.mobile)
+
+    def change_field_value(self, field_to_change_value, text):
+        wd = self.app.wd
+        if text is not None:
+            wd.find_element_by_name(field_to_change_value).clear()
+            wd.find_element_by_name(field_to_change_value).send_keys(text)
 
     def delete_first_contact(self):
         wd = self.app.wd
@@ -42,15 +51,9 @@ class ContactHelper:
     def modify_first_contact(self, contact):
         wd = self.app.wd
         self.select_first_contact()
+        # submit modifying
+        wd.find_element_by_xpath("//img[@title='Edit']").click()
         # modifying fields
-        wd.find_element_by_name("firstname").send_keys(contact.firstname)
-        wd.find_element_by_name("middlename").send_keys(contact.middlename)
-        wd.find_element_by_name("lastname").send_keys(contact.lastname)
-        wd.find_element_by_name("nickname").send_keys(contact.nickname)
-        wd.find_element_by_name("title").send_keys(contact.title)
-        wd.find_element_by_name("company").send_keys(contact.company)
-        wd.find_element_by_name("address").send_keys(contact.address)
-        wd.find_element_by_name("home").send_keys(contact.home)
-        wd.find_element_by_name("mobile").send_keys(contact.mobile)
+        self.fill_contact_form(contact)
         # submit contact creation
         wd.find_element_by_name("update").click()
