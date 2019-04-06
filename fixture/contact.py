@@ -11,6 +11,11 @@ class ContactHelper:
         self.fill_contact_form(contact_fields)
         # submit contact creation
         wd.find_element_by_name("submit").click()
+        self.return_to_home_page()
+
+    def return_to_home_page(self):
+        wd = self.app.wd
+        wd.find_element_by_link_text("home").click()
 
     def fill_contact_form(self, contact):
         self.change_field_value("firstname", contact.firstname)
@@ -57,3 +62,7 @@ class ContactHelper:
         self.fill_contact_form(contact)
         # submit contact creation
         wd.find_element_by_name("update").click()
+
+    def count(self):
+        wd = self.app.wd
+        return len(wd.find_elements_by_xpath("//checkbox[@name='selected[]']"))
