@@ -1,3 +1,6 @@
+from model.contact import Contact
+
+
 class ContactHelper:
 
     def __init__(self, app):
@@ -67,4 +70,16 @@ class ContactHelper:
 
     def count(self):
         wd = self.app.wd
-        return len(wd.find_elements_by_xpath("//checkbox[@name='selected[]']"))
+        return len(wd.find_elements_by_name('selected[]'))
+
+    def get_contacts_list(self):
+        wd = self.app.wd
+        self.return_to_home_page()
+        contacts_list = []
+        for element in wd.find_elements_by_name('selected[]'):
+            string = element.get_attribute('title').replace('Select', '').replace('(', '').replace(')', '')
+            firstname = string.split(' ')[1]
+            lastname = string.split(' ')[2]
+            id = element.get_attribute('value')
+            contacts_list.append(Contact(firstname=firstname, lastname=lastname,id=id))
+        return contacts_list
