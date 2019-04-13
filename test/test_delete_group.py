@@ -10,3 +10,4 @@ def test_delete_first_group(app):
     assert len(old_groups_list) - 1 == len(new_groups_list)
     old_groups_list[0:1] = []
     assert old_groups_list == new_groups_list
+
