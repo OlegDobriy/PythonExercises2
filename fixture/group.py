@@ -47,7 +47,7 @@ class GroupHelper:
         wd = self.app.wd
         self.open_groups_page()
         # select group by name
-        wd.find_element_by_css_selector("[title*=" + group.name + "]").click()
+        wd.find_element_by_css_selector("[title*=%s]" % group.name).click()
         # submit deletion
         wd.find_element_by_name('delete').click()
         # return to group page
