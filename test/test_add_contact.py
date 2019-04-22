@@ -1,27 +1,30 @@
 # -*- coding: utf-8 -*-
 
 from model.contact import Contact
+import pytest
+import random
+import string
 
 
-def test_add_contact(app):
+def random_sting(prefix, max_len):
+    symbols = string.ascii_letters + string.digits
+    return prefix + (''.join([random.choice(symbols) for i in range(random.randrange(max_len))]))
+
+
+testdata = [Contact(firstname=firstname, lastname=lastname, homephone=homephone, email3=email3)
+            for firstname in ['', random_sting('firstname', 5)]
+            for lastname in ['', random_sting('lastname', 15)]
+            for homephone in ['', random_sting('homephone', 10)]
+            for email3 in ['', random_sting('email3', 10)]
+]
+
+
+@pytest.mark.parametrize('contact_data', testdata, ids=[repr(x) for x in testdata])
+def test_add_contact(app, contact_data):
     old_contacts_list = app.contact.get_contacts_list()
-    new_contact = Contact(firstname='firstname', middlename='middlename', lastname='lastname',
-                          nickname='nickname', title='title', company='company', address='address',
-                          homephone='homephone', mobilephone='mobilephone')
-    app.contact.create(new_contact)
+    app.contact.create(contact_data)
     assert len(old_contacts_list) + 1 == app.contact.count()
     new_contacts_list = app.contact.get_contacts_list()
-    old_contacts_list.append(new_contact)
+    old_contacts_list.append(contact_data)
     assert sorted(new_contacts_list, key=Contact.sorting_id_or_maxsize) == sorted(old_contacts_list,
                                                                                   key=Contact.sorting_id_or_maxsize)
-
-
-'''
-def test_add_empty_contact(app):
-    old_contacts_list = app.contact.get_contacts_list()
-    app.contact.create(Contact(firstname='', middlename='', lastname='',
-                               nickname='', title='', company='', address='',
-                               home='', mobile=''))
-    new_contacts_list = app.contact.get_contacts_list()
-    assert len(old_contacts_list) + 1 == len(new_contacts_list)
-'''
