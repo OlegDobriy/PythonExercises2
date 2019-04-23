@@ -54,6 +54,15 @@ class GroupHelper:
         self.return_to_group_page()
         self.group_cache = None
 
+    def delete_all_groups(self):
+        wd = self.app.wd
+        self.open_groups_page()
+        groups_list = wd.find_elements_by_name('selected[]')
+        for checkbox in groups_list:
+            checkbox.click()
+        wd.find_element_by_name('delete').click()
+
+
     def count(self):
         wd = self.app.wd
         self.open_groups_page()
