@@ -11,11 +11,11 @@ def random_sting(prefix, max_len):
     return prefix + (''.join([random.choice(symbols) for i in range(random.randrange(max_len))]))
 
 
-testdata = [Contact(firstname=firstname, lastname=lastname, homephone=homephone, email3=email3)
-            for firstname in ['', random_sting('firstname', 5)]
-            for lastname in ['', random_sting('lastname', 15)]
-            for homephone in ['', random_sting('homephone', 10)]
-            for email3 in ['', random_sting('email3', 10)]
+testdata = [
+    Contact(firstname=random_sting('firstname_', 10), lastname=random_sting('lastname_', 10),
+            address=random_sting('address_', 10), homephone=random_sting('homephone_', 10),
+            email3=random_sting('email3_', 10))
+    for i in range(5)
 ]
 
 

@@ -12,10 +12,8 @@ def random_sting(prefix, max_len):
 
 
 testdata = [
-    Group(name=name, header=header, footer=footer)
-    for name in ['', random_sting('name', 5)]
-    for header in ['', random_sting('header', 10)]
-    for footer in ['', random_sting('footer', 15)]
+    Group(name=random_sting('name_', 10), header=random_sting('header_', 10), footer=random_sting('footer_', 10))
+    for i in range(5)
 ]
 
 
@@ -28,3 +26,4 @@ def test_add_group(app, group_data):
     old_groups_list.append(group_data)
     assert sorted(old_groups_list, key=Group.sorting_id_or_maxsize) == sorted(new_groups_list,
                                                                               key=Group.sorting_id_or_maxsize)
+
