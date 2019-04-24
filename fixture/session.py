@@ -1,3 +1,6 @@
+from selenium.common.exceptions import NoSuchElementException
+
+
 class SessionHelper:
 
     def __init__(self, app):
@@ -9,6 +12,10 @@ class SessionHelper:
         wd.find_element_by_name("user").send_keys(username)
         wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath("//input[@value='Login']").click()
+#        try:
+#            wd.find_element_by_xpath("//input[@value='Login']")
+#        except NoSuchElementException:
+#            print('Wrong credentials!')
 
     def logout(self):
         wd = self.app.wd
