@@ -1,23 +1,29 @@
 from fixture.application import Application
 import pytest
+import json
+import os.path
 
 
 fixture = None
+target = None
 
 
 @pytest.fixture
 def app(request):
     global fixture
+    global target
     browser = request.config.getoption('--browser')
-    base_url = request.config.getoption('--baseUrl')
-    username = request.config.getoption('--username')
-    password = request.config.getoption('--password')
-    if fixture is None:
-        fixture = Application(browser=browser, base_url=base_url)
-    else:
-        if not fixture.is_valid():
-            fixture = Application(browser, base_url=base_url)
-    fixture.session.check_login(username=username, password=password)
+    baseUrl = request.config.getoption('--baseUrl')
+    if target is None:  # загружать конфиг только один раз
+        path_to_config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),  # чтобы каждый раз не указы-
+                                               request.config.getoption('--target'))        # вать путь к файлу с конф.
+        with open(path_to_config_file) as config_file:
+            target = json.load(config_file)  # прочитать json с конфигурацией
+    if baseUrl is None:  # если задали URL в параметре запуска, то брать его, иначе брать из target.json
+        baseUrl = target['baseUrl']
+    if fixture is None or not fixture.is_valid():
+        fixture = Application(browser=browser, base_url=baseUrl)
+    fixture.session.check_login(username=target['username'], password=target['password'])
     return fixture
 
 
@@ -34,6 +40,5 @@ def app_stop(request):
 
 def pytest_addoption(parser):
     parser.addoption('--browser', action='store', default='chrome')
-    parser.addoption('--baseUrl', action='store', default='http://localhost/addressbook/')
-    parser.addoption('--username', action='store', default='admin')
-    parser.addoption('--password', action='store', default='secret')
+    parser.addoption('--baseUrl', action='store')
+    parser.addoption('--target', action='store', default='target.json')
