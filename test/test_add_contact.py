@@ -3,15 +3,17 @@
 from model.contact import Contact
 
 
-def test_add_contact(app, json_contacts):
+def test_add_contact(app, db, check_ui, json_contacts):
     contact = json_contacts
-    old_contacts_list = app.contact.get_contacts_list()
+    old_contacts_list = db.get_contacts_list()
     app.contact.create(contact)
-    assert len(old_contacts_list) + 1 == app.contact.count()
-    new_contacts_list = app.contact.get_contacts_list()
+    new_contacts_list = db.get_contacts_list()
     old_contacts_list.append(contact)
     assert sorted(new_contacts_list, key=Contact.sorting_id_or_maxsize) == sorted(old_contacts_list,
                                                                                   key=Contact.sorting_id_or_maxsize)
+    if check_ui:
+        assert sorted(new_contacts_list, key=Contact.sorting_id_or_maxsize) ==\
+               sorted(db.get_contacts_list(), key=Contact.sorting_id_or_maxsize)
 
 
 '''
