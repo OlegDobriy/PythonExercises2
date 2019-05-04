@@ -37,3 +37,9 @@ class Contact:
             return int(self.id)
         else:
             return maxsize
+
+    def sorting_name(self):
+        if self.firstname:
+            return str(self.firstname)
+        else:
+            return maxsize

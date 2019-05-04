@@ -20,3 +20,9 @@ class Group:
             return int(self.id)
         else:
             return maxsize
+
+    def sorting_name(self):
+        if self.name:
+            return str(self.name)
+        else:
+            return maxsize
