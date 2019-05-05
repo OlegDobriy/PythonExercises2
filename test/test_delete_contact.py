@@ -14,4 +14,4 @@ def test_delete_random_contact(app, db, check_ui):
                                                                                   key=Contact.sorting_id_or_maxsize)
     if check_ui:
         assert sorted(new_contacts_list, key=Contact.sorting_id_or_maxsize) ==\
-               sorted(db.get_contacts_list(), key=Contact.sorting_id_or_maxsize)
+               sorted(app.contact.get_contacts_list(), key=Contact.sorting_id_or_maxsize)

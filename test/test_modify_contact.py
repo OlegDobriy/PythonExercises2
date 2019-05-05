@@ -13,8 +13,8 @@ def test_modify_contact(app, db, check_ui, json_contacts):
     app.contact.modify_contact_by_index(index, new_contact)
     new_contacts_list = db.get_contacts_list()
     old_contacts_list[index] = new_contact
-    assert sorted(new_contacts_list, key=Contact.sorting_id_or_maxsize) == sorted(old_contacts_list,
-                                                                                  key=Contact.sorting_id_or_maxsize)
+    assert sorted(new_contacts_list, key=Contact.sorting_id_or_maxsize) ==\
+        sorted(old_contacts_list, key=Contact.sorting_id_or_maxsize)
     if check_ui:
         assert sorted(new_contacts_list, key=Contact.sorting_id_or_maxsize) ==\
-               sorted(db.get_contacts_list(), key=Contact.sorting_id_or_maxsize)
+            sorted(app.contact.get_contacts_list(), key=Contact.sorting_id_or_maxsize)
