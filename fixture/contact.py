@@ -158,3 +158,45 @@ class ContactHelper:
         secondaryphone = re.search('P: (.*)', whole_text).group(1)
         return Contact(homephone=homephone,
                        mobilephone=mobilephone, workphone=workphone, secondaryphone=secondaryphone)
+
+    def add_contact_to_group(self, contact, group):
+        wd = self.app.wd
+        self.return_to_home_page()
+        self.select_contact_by_id(contact.id)
+        # choose group to add
+        wd.find_element_by_xpath("//select[@name='to_group']/option[@value='%s']" % group.id).click()
+        # submit adding contact to group
+        wd.find_element_by_name('add').click()
+        self.return_to_home_page()
+        self.contact_cache = None
+
+    def remove_contact_from_group(self, contact, group):
+        wd = self.app.wd
+        self.return_to_home_page()
+        # choose group to get contact list
+        wd.find_element_by_xpath("//select[@name='group']/option[@value='%s']" % group.id).click()
+        self.select_contact_by_id(contact.id)
+        # submit removing
+        wd.find_element_by_name('remove').click()
+        self.return_to_home_page()
+        self.contact_cache = None
+
+    def get_contacts_in_group(self, group):
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.return_to_home_page()
+            # choose group to get contact list
+            wd.find_element_by_xpath("//select[@name='group']/option[@value='%s']" % group.id).click()
+            self.contact_cache = []
+            for element in wd.find_elements_by_name("entry"):
+                id = element.find_element_by_name('selected[]').get_attribute('id')
+                lastname = element.find_element_by_xpath('.//td[2]').text
+                firstname = element.find_element_by_xpath('.//td[3]').text
+                address = element.find_element_by_xpath('.//td[4]').text
+                all_emails_from_edit_page = element.find_element_by_xpath('.//td[5]').text
+                all_phones = element.find_element_by_xpath('.//td[6]').text
+                self.contact_cache.append(Contact(id=id, firstname=firstname, lastname=lastname,
+                                                  address=address,
+                                                  all_emails_from_edit_page=all_emails_from_edit_page,
+                                                  all_phones_from_edit_page=all_phones))
+        return list(self.contact_cache)
