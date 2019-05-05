@@ -10,7 +10,7 @@ class DbFixture:
         self.name = name
         self.username = user
         self.password = password
-        self.connection = pymysql.connect(host=host, database=name, user=user, password=password, autocommit = True)
+        self.connection = pymysql.connect(host=host, database=name, user=user, password=password, autocommit=True)
 
     def get_groups_list(self):
         list = []
@@ -38,4 +38,3 @@ class DbFixture:
 
     def destroy(self):
         self.connection.close()
-
