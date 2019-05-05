@@ -106,3 +106,5 @@ venv.bak/
 data/contacts.json
 data/groups.json
 .idea/dictionaries/CRUMBL.xml
+db.py
+db.py
