@@ -2,6 +2,7 @@ from pony.orm import *
 from datetime import datetime
 from model.group import Group
 from model.contact import Contact
+import pymysql.cursors
 
 
 class ORMFixture:
@@ -27,6 +28,7 @@ class ORMFixture:
     def __init__(self, host, name, user, password):
         self.db.bind('mysql', host=host, database=name, user=user, password=password)
         self.db.generate_mapping()
+        self.connection = pymysql.connect(host=host, database=name, user=user, password=password, autocommit=True)
         sql_debug(True)
 
     def convert_groups_to_model(self, groups):
@@ -57,3 +59,6 @@ class ORMFixture:
         orm_group = list(select(g for g in ORMFixture.ORMGroup if g.id == group.id))[0]
         return self.convert_contacts_to_model(
             select(c for c in ORMFixture.ORMContact if c.deprecated is None and orm_group not in c.groups))
+
+    def destroy(self):
+        self.connection.close()
