@@ -28,7 +28,7 @@ class Contact:
     def __repr__(self):
         return '{%s:%s:%s:%s}' % (self.id, self.firstname, self.middlename, self.lastname)
 
-    def __eq__(self, other):
+    def __eq__(self, other):  # если None, то не сравниваем. Это когда добавляется из теста, то id нет
         return (self.id is None or other.id is None or self.id == other.id)\
                and self.firstname == other.firstname and self.lastname == other.lastname
 
