@@ -143,6 +143,20 @@ class ContactHelper:
         self.return_to_home_page()
         self.contact_cache = None
 
+    def modify_contact_by_id(self, id, new_data):
+        wd = self.app.wd
+        self.open_contact_edit_page_by_id(id)
+        self.fill_contact_form(new_data)
+        # submit contact creation
+        wd.find_element_by_name("update").click()
+        self.return_to_home_page()
+        self.contact_cache = None
+
+    def open_contact_edit_page_by_id(self, id):
+        wd = self.app.wd
+        self.return_to_home_page()
+        wd.find_element_by_xpath("//input[@id=%s]/../../td[8]/a/img[@title='Edit']" % id).click()
+
     def open_contact_edit_page_by_index(self, index):
         wd = self.app.wd
         self.return_to_home_page()
