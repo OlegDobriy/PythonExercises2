@@ -111,3 +111,6 @@ db.py
 .idea/jsonSchemas.xml
 allure-report/
 allure-results/
+log.html
+output.xml
+report.html
