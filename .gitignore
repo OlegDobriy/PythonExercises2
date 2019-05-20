@@ -108,3 +108,6 @@ data/groups.json
 .idea/dictionaries/CRUMBL.xml
 db.py
 db.py
+.idea/jsonSchemas.xml
+allure-report/
+allure-results/
