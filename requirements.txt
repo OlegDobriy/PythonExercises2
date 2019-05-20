@@ -1,4 +1,5 @@
 pytest
+robotframework-python3
 pytest_bdd
 selenium
 jsonpickle
