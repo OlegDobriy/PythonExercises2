@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
-
-
 from model.group import Group
+import allure
 
 
 def test_add_group(app, db, check_ui, json_groups):
@@ -10,11 +8,12 @@ def test_add_group(app, db, check_ui, json_groups):
     app.group.create(group)
     new_groups_list = db.get_groups_list()
     old_groups_list.append(group)
-    assert sorted(old_groups_list, key=Group.sorting_id_or_maxsize) == sorted(new_groups_list,
-                                                                              key=Group.sorting_id_or_maxsize)
-    if check_ui:
-        assert sorted(new_groups_list, key=Group.sorting_id_or_maxsize) ==\
-               sorted(app.group.get_groups_list(), key=Group.sorting_id_or_maxsize)
+    with allure.step('Comparison the lists'):
+        assert sorted(old_groups_list, key=Group.sorting_id_or_maxsize) == sorted(new_groups_list,
+                                                                                  key=Group.sorting_id_or_maxsize)
+        if check_ui:
+            assert sorted(new_groups_list, key=Group.sorting_id_or_maxsize) ==\
+                   sorted(app.group.get_groups_list(), key=Group.sorting_id_or_maxsize)
 
 
 '''

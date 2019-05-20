@@ -1,11 +1,12 @@
 from model.group import Group
-
+import allure
 
 class GroupHelper:
 
     def __init__(self, app):
         self.app = app
 
+    @allure.step('Create a group')
     def create(self, group_fields):
         wd = self.app.wd
         self.open_groups_page()
