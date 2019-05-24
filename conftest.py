@@ -56,6 +56,7 @@ def orm(request):
     request.addfinalizer(final)
     return ormfixture
 
+
 @pytest.fixture(scope='session', autouse=True)
 def app_stop(request):
     def final():
@@ -78,8 +79,8 @@ def pytest_addoption(parser):
 
 
 def pytest_generate_tests(metafunc):  # задаем, как в функциях будет называться параметр, в котором передаются
-    for fixture in metafunc.fixturenames:  # тестовые данные
-        if fixture.startswith('data_'):
+    for fixture in metafunc.fixturenames:  # тестовые данные. Если в тест передать параметр, который начинается на
+        if fixture.startswith('data_'):  # data_ или json_, то данные возьмутся из соответствующих файлов
             testdata = load_from_module(fixture[5:])  # убрать первые пять символов (data_)
             metafunc.parametrize(fixture, testdata, ids=[str(x) for x in testdata])
         if fixture.startswith('json_'):

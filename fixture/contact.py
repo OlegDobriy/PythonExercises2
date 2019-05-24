@@ -52,6 +52,7 @@ class ContactHelper:
 
     def delete_contact_by_name(self, contact):
         wd = self.app.wd
+        self.return_to_home_page()
         # find contact by name
         wd.find_element_by_css_selector("[title*=" + contact.lastname + "]").click()
         # submit deletion
@@ -126,6 +127,7 @@ class ContactHelper:
 
     def select_contact_by_id(self, id):
         wd = self.app.wd
+        self.return_to_home_page()
         wd.find_element_by_xpath('//input[@id="%s"]' % id).click()
 
     def delete_first_contact(self):
