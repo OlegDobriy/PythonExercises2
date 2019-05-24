@@ -1,20 +1,19 @@
 import re
-from random import randrange
 
 
-def test_all_cells_on_home_page(app):
-    index = randrange(app.contact.count())
-    contact_from_home_page = app.contact.get_contacts_list()[index]
-    contact_from_edit_page = app.contact.get_contact_info_from_edit_page_by_index(index)
-    assert contact_from_home_page.firstname == contact_from_edit_page.firstname
-    assert contact_from_home_page.lastname == contact_from_edit_page.lastname
-    assert contact_from_home_page.address == contact_from_edit_page.address
-    assert contact_from_home_page.all_emails_from_edit_page == merge_emails_like_on_home_page(contact_from_edit_page)
-    assert contact_from_home_page.all_phones_from_edit_page == merge_phones_like_on_home_page(contact_from_edit_page)
+def test_all_cells_on_home_page(app, db):
+    home_page = app.contact.get_contacts_list()
+    from_db = db.get_contacts_list()
+    for i in range(len(db.get_contacts_list())):
+        assert home_page[i].firstname == from_db[i].firstname
+        assert home_page[i].lastname == from_db[i].lastname
+        assert clear(home_page[i].address) == clear(from_db[i].address)
+        assert clear(home_page[i].all_emails_from_edit_page) == clear(from_db[i].all_emails_from_edit_page)
+        assert clear(home_page[i].all_phones_from_edit_page) == clear(from_db[i].all_phones_from_edit_page)
 
 
 def clear(phrase):
-    return re.sub('[() -]', '', phrase)
+    return re.sub('[()\r \n-]', '', phrase)
 
 
 def merge_emails_like_on_home_page(contact):
